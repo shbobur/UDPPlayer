@@ -4,6 +4,8 @@
 #include <QUdpSocket>
 #include <QHostAddress>
 #include <QPixmap>
+#include <QImage>
+#include <QGraphicsPixmapItem>
 
 PlayerWidget::PlayerWidget(QWidget *parent) :
     QWidget(parent),
@@ -11,6 +13,10 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    scene = new QGraphicsScene(this);
+    QGraphicsPixmapItem *pixm = new QGraphicsPixmapItem(QPixmap::fromImage(QImage(":/SVkVXu-T_400x400_JPEG.jpg")));
+    scene->addItem(pixm);
+    ui->playerGraphicsView->setScene(scene);
     client = new QUdpSocket;
     fps = 0;
 
@@ -44,28 +50,22 @@ void PlayerWidget::readBytes()
         client->readDatagram(datagram.data(), datagram.size());
     } while (client->hasPendingDatagrams());
 
-    //qDebug() << QString("Received %1").arg(datagram.size());
-
-    //int size;
-    //QDataStream in(&datagram, QIODevice::ReadOnly);
-    //in.setVersion(QDataStream::Qt_5_9);
-
-    //QByteArray imageByte;
-    //in >> imageByte;
-    //qDebug() << imageByte.size() << " bytes are read from stream";
     QImage image;
     //image.loadFromData(imageByte, "JPEG");
     image.loadFromData(datagram, "JPEG");
     if (!image.isNull()) {
         emit newFrame(image);
-       // ui->logger->append(QString("Valid frame received: %1").arg(size));
+        ui->logger->append(QString("Valid frame received: %1").arg(size));
     } else
         ui->logger->append("Cannot decode image");
 }
 
 void PlayerWidget::handleImage(QImage image)
 {
-    ui->player->setPixmap(QPixmap::fromImage(image));
+    QGraphicsPixmapItem *imageItem = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+    scene->addItem(imageItem);
+    ui->logger->append(QString("Tried to display image..."));
+
     fps++;
 }
 

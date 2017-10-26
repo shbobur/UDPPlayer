@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QImage>
 #include <QTimer>
+#include <QGraphicsScene>
 
 namespace Ui {
 class PlayerWidget;
@@ -23,8 +24,10 @@ private slots:
     void readBytes();
     void handleImage(QImage image);
     void printFrameRate();
+    //void redrawImage(QImage image);
 
     void on_bindButton_clicked();
+
 
 signals:
     void newFrame(QImage image);
@@ -37,6 +40,7 @@ private:
     QTimer timer;
     int fps;
 
+    QGraphicsScene *scene;
     bool receivingImage;
     QString fileName;
     int imageSize;

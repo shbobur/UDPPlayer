@@ -32,3 +32,6 @@ HEADERS += \
 
 FORMS += \
         playerwidget.ui
+
+RESOURCES += \
+    resources.qrc
