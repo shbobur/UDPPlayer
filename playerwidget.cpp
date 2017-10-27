@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QImage>
 #include <QGraphicsPixmapItem>
+#include <QImageReader>
 
 PlayerWidget::PlayerWidget(QWidget *parent) :
     QWidget(parent),
@@ -50,21 +51,30 @@ void PlayerWidget::readBytes()
         client->readDatagram(datagram.data(), datagram.size());
     } while (client->hasPendingDatagrams());
 
+
     QImage image;
     //image.loadFromData(imageByte, "JPEG");
     image.loadFromData(datagram, "JPEG");
     if (!image.isNull()) {
         emit newFrame(image);
-        ui->logger->append(QString("Valid frame received: %1").arg(size));
+       // ui->logger->append(QString("Valid frame received: %1").arg(size));
     } else
         ui->logger->append("Cannot decode image");
 }
 
 void PlayerWidget::handleImage(QImage image)
 {
-    QGraphicsPixmapItem *imageItem = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+    int w = 1280;   //width
+    int h = 800;    //height
+    QPixmap pixmap;
+    if (image.width() > image.height())   // if landscape mode
+        pixmap = QPixmap::fromImage(image.scaled(w, h));
+    else                                    // portrait
+        pixmap = QPixmap::fromImage(image.scaled(h, w));
+
+    QGraphicsPixmapItem *imageItem = new QGraphicsPixmapItem(pixmap);
     scene->addItem(imageItem);
-    ui->logger->append(QString("Tried to display image..."));
+    //ui->logger->append(QString("Tried to display image..."));
 
     fps++;
 }
@@ -73,6 +83,8 @@ void PlayerWidget::printFrameRate()
 {
     ui->logger->append(QString("%1 frames/s").arg(fps));
     fps = 0;
+
+    scene->clear();
 }
 
 void PlayerWidget::on_bindButton_clicked()
