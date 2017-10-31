@@ -2,9 +2,11 @@
 #define PLAYERWIDGET_H
 
 #include <QWidget>
-#include <QImage>
 #include <QTimer>
-#include <QGraphicsScene>
+#include <QFile>
+#include <QTextStream>
+#include "devicescreenwidget.h"
+#include "connectionhandler.h"
 
 namespace Ui {
 class PlayerWidget;
@@ -21,30 +23,25 @@ public:
     ~PlayerWidget();
 
 private slots:
-    void readBytes();
-    void handleImage(QImage image);
+
     void printFrameRate();
-    //void redrawImage(QImage image);
-
-    void on_bindButton_clicked();
-
 
 signals:
-    void newFrame(QImage image);
 
 
 private:
     Ui::PlayerWidget *ui;
+    DeviceScreenWidget *screenWidget;
+    ConnectionHandler *connectionHandler;
 
-    QUdpSocket *client;
     QTimer timer;
     int fps;
 
-    QGraphicsScene *scene;
-    bool receivingImage;
-    QString fileName;
-    int imageSize;
-    QByteArray imageDatagram;
+    QFile logFile;
+    QTextStream logStream;
+    bool isLogging;
+
+
 };
 
 #endif // PLAYERWIDGET_H

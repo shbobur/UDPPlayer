@@ -25,13 +25,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        playerwidget.cpp
+        playerwidget.cpp \
+    devicescreenwidget.cpp \
+    graphicsscene.cpp \
+    udphandler.cpp \
+    tcphandler.cpp \
+    connectionhandler.cpp
 
 HEADERS += \
-        playerwidget.h
+        playerwidget.h \
+    devicescreenwidget.h \
+    graphicsscene.h \
+    udphandler.h \
+    tcphandler.h \
+    connectionhandler.h
 
 FORMS += \
-        playerwidget.ui
+        playerwidget.ui \
+    devicescreenwidget.ui
 
 RESOURCES += \
     resources.qrc
