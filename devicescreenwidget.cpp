@@ -8,6 +8,7 @@
 #include <QProcess>
 #include <QStringList>
 #include <QVBoxLayout>
+#include <QTime>
 
 DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
     QWidget(parent),
@@ -35,6 +36,7 @@ DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
     ui->playerGraphicsView->setSceneRect(0, 0, width, height);
     //ui->playerGraphicsView->setSceneRect(0, 0, width, height);
    // ui->playerGraphicsView->fitInView(0, 0, width, height, Qt::KeepAspectRatio);
+    forwardAdbPort();
     startMobileApp();
 }
 
@@ -62,7 +64,7 @@ void DeviceScreenWidget::handleImage(QPixmap pixmap)
     scene->addPixmap(pixmap.scaled(width, height, Qt::KeepAspectRatio));
     //scene->addItem(new QGraphicsPixmapItem(pixmap.scaled(width, height)));
 
-    qDebug() << "Tried to display image...";
+    //qDebug() << "Tried to display image..." << QTime::currentTime().toString();
 }
 
 void DeviceScreenWidget::showMouseCoord(QString coord)
@@ -96,6 +98,19 @@ void DeviceScreenWidget::startMobileApp()
 void DeviceScreenWidget::stopMobileApp()
 {
     QString cmd = "C:/Users/Bobur/AppData/Local/Android/sdk/platform-tools/adb.exe -s 02157df27a5a001e shell pm clear com.example.admin.streammediaprojection";
+    QProcess *p = new QProcess(this);
+    p->start(cmd);
+    p->waitForFinished(-1);
+    qDebug()<<QString("QProcess finished with exit code: %1 %2")
+              .arg(p->exitCode())
+              .arg(p->errorString());
+    QString result = p->readAllStandardOutput();
+    qDebug() << result;
+}
+
+void DeviceScreenWidget::forwardAdbPort()
+{
+    QString cmd = "C:/Users/Bobur/AppData/Local/Android/sdk/platform-tools/adb.exe forward tcp:5900 tcp:6600";
     QProcess *p = new QProcess(this);
     p->start(cmd);
     p->waitForFinished(-1);

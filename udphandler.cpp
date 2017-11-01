@@ -1,28 +1,30 @@
 #include "udphandler.h"
 
 #include <QUdpSocket>
+#include <QTcpSocket>
 #include <QPixmap>
 
 #define PORT 6600
 
 UDPHandler::UDPHandler(QObject *parent) : ConnectionHandler(parent)
 {
-    client = new QUdpSocket(this);
+    // set UDP socket to receive frames from mobile agent
+    mobileClientSocket = new QUdpSocket(this);
+    connect(mobileClientSocket, &QIODevice::readyRead, this, &UDPHandler::readBytes);
 
-    connect(client, &QIODevice::readyRead, this, &UDPHandler::readBytes);
-
-    if (client->bind(PORT)) {
+    if (mobileClientSocket->bind(PORT)) {
         qDebug() << QString("Bound to port %1\n").arg(PORT);
     } else {
-        qDebug() << QString("Could not Bind to port %1\n").arg(PORT);
+        qDebug() << QString("Could not Bind to `port %1\n").arg(PORT);
     }
+
 }
 
 UDPHandler::~UDPHandler()
 {
-    if (client->isOpen())
-        client->disconnect();
-    client->deleteLater();
+    if (mobileClientSocket->isOpen())
+        mobileClientSocket->disconnect();
+    mobileClientSocket->deleteLater();
 }
 
 void UDPHandler::readBytes()
@@ -32,17 +34,19 @@ void UDPHandler::readBytes()
     //int size = client->pendingDatagramSize();
     do {
         //qDebug() << QString("Receiving %1 bytes").arg(client->pendingDatagramSize());
-        datagram.resize(client->pendingDatagramSize());
-        client->readDatagram(datagram.data(), datagram.size());
-    } while (client->hasPendingDatagrams());
+        datagram.resize(mobileClientSocket->pendingDatagramSize());
+        mobileClientSocket->readDatagram(datagram.data(), datagram.size());
+    } while (mobileClientSocket->hasPendingDatagrams());
 
 
     QPixmap pixmap;
     pixmap.loadFromData(datagram, "JPEG");
     //image.loadFromData(datagram, "JPEG");
-    if (!pixmap.isNull()) {
+    //if (!pixmap.isNull()) {
         emit newFrame(pixmap);
-        qDebug() << "Valid frame received";
-    } else
-        qDebug() << "Cannot decode image\n";
+       // qDebug() << "Valid frame received";
+    //} else
+        //  qDebug() << "Cannot decode image\n";
+
+    //sendToIRS(datagram);
 }

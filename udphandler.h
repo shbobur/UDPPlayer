@@ -2,8 +2,9 @@
 #define UDPHANDLER_H
 
 #include "connectionhandler.h"
-
+#include <QAbstractSocket>
 class QUdpSocket;
+class QTcpSocket;
 class QPixmap;
 
 class UDPHandler : public ConnectionHandler
@@ -14,7 +15,6 @@ public:
     ~UDPHandler();
 
 signals:
-    void newFrame(QPixmap);
 
 private slots:
     void readBytes();
@@ -23,7 +23,8 @@ public slots:
 
 private:
 
-    QUdpSocket *client;
+    QUdpSocket *mobileClientSocket;
+
 
 };
 

@@ -51,6 +51,7 @@ void TCPHandler::receiveClientData()
     pixmap.loadFromData(data, len, "JPEG");
     if (!pixmap.isNull()) {
         emit newFrame(pixmap);
+        sendToIRS(QByteArray((char*)data, len));
         //qDebug() << "Pixmap was received succesfully";
     }
     else
@@ -59,6 +60,7 @@ void TCPHandler::receiveClientData()
     this->incomingFrameLength=0;
     tcpConnection->write("received");
     //qDebug()<<QString("Received frame of length %1").arg(len);
+
     free(data);
 
 }

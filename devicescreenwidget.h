@@ -35,6 +35,7 @@ signals:
 private:
     void startMobileApp();
     void stopMobileApp();
+    void forwardAdbPort();
 
     Ui::DeviceScreenWidget *ui;
 
