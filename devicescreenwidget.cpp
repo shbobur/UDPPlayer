@@ -3,11 +3,10 @@
 
 #include <QGraphicsPixmapItem>
 #include <QImage>
-#include <QGraphicsScene>
+#include <QPushButton>
 #include <QDebug>
 #include <QProcess>
 #include <QStringList>
-#include <QVBoxLayout>
 #include <QTime>
 
 DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
@@ -15,7 +14,8 @@ DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
     ui(new Ui::DeviceScreenWidget)
 {
     ui->setupUi(this);
-
+    setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+/*
     sOrientaion = Portrait;
     shortSide = 360; // 480;
     longSide = 640; //853;
@@ -35,7 +35,17 @@ DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
     //ui->playerGraphicsView->setFixedSize(width+2*ui->playerGraphicsView->frameWidth(), height+2*ui->playerGraphicsView->frameWidth());
     ui->playerGraphicsView->setSceneRect(0, 0, width, height);
     //ui->playerGraphicsView->setSceneRect(0, 0, width, height);
-   // ui->playerGraphicsView->fitInView(0, 0, width, height, Qt::KeepAspectRatio);
+   // ui->playerGraphicsView->fitInView(0, 0, width, height, Qt::KeepAspectRatio);*/
+
+    screenPortrait = new DeviceScreenPortrait(this);
+
+    // portrait screen layout
+
+    lytPortrait = new QVBoxLayout(this);
+    lytPortrait->setMargin(0);
+    lytPortrait->addWidget(screenPortrait);
+    this->setLayout(lytPortrait);
+
     forwardAdbPort();
     startMobileApp();
 }
@@ -60,8 +70,10 @@ void DeviceScreenWidget::handleImage(QPixmap pixmap)
         height = longSide;
     }
 
-    scene->clear();
-    scene->addPixmap(pixmap.scaled(width, height, Qt::KeepAspectRatio));
+    screenPortrait->updateImage(pixmap);
+
+   // scene->clear();
+   // scene->addPixmap(pixmap.scaled(width, height, Qt::KeepAspectRatio));
     //scene->addItem(new QGraphicsPixmapItem(pixmap.scaled(width, height)));
 
     //qDebug() << "Tried to display image..." << QTime::currentTime().toString();
@@ -69,7 +81,7 @@ void DeviceScreenWidget::handleImage(QPixmap pixmap)
 
 void DeviceScreenWidget::showMouseCoord(QString coord)
 {
-    ui->mouseCoordLabel->setText(coord);
+   //` ui->mouseCoordLabel->setText(coord);
 }
 
 void DeviceScreenWidget::on_pushButton_clicked()

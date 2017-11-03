@@ -42,11 +42,13 @@ void UDPHandler::readBytes()
     QPixmap pixmap;
     pixmap.loadFromData(datagram, "JPEG");
     //image.loadFromData(datagram, "JPEG");
-    //if (!pixmap.isNull()) {
+    if (!pixmap.isNull()) {
         emit newFrame(pixmap);
+        sendToIRS(datagram);
        // qDebug() << "Valid frame received";
-    //} else
+    }
+    //else
         //  qDebug() << "Cannot decode image\n";
 
-    //sendToIRS(datagram);
+
 }

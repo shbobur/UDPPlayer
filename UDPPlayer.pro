@@ -30,7 +30,9 @@ SOURCES += \
     graphicsscene.cpp \
     udphandler.cpp \
     tcphandler.cpp \
-    connectionhandler.cpp
+    connectionhandler.cpp \
+    devicescreen.cpp \
+    devicescreenportrait.cpp
 
 HEADERS += \
         playerwidget.h \
@@ -38,7 +40,9 @@ HEADERS += \
     graphicsscene.h \
     udphandler.h \
     tcphandler.h \
-    connectionhandler.h
+    connectionhandler.h \
+    devicescreen.h \
+    devicescreenportrait.h
 
 FORMS += \
         playerwidget.ui \

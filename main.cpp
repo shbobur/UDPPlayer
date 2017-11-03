@@ -1,12 +1,12 @@
 #include "playerwidget.h"
-#include "devicescreenwidget.h"
+#include "devicescreenportrait.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     PlayerWidget w;
-    //DeviceScreenWidget w;
+    //DeviceScreenPortrait w;
     w.show();
 
     return a.exec();

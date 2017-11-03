@@ -51,6 +51,7 @@ void TCPHandler::receiveClientData()
     pixmap.loadFromData(data, len, "JPEG");
     if (!pixmap.isNull()) {
         emit newFrame(pixmap);
+        qDebug() << len;
         sendToIRS(QByteArray((char*)data, len));
         //qDebug() << "Pixmap was received succesfully";
     }
@@ -73,6 +74,7 @@ void TCPHandler::clientConnected()
 void TCPHandler::clientDiconnected()
 {
     qDebug() << "Disconnected.";
+    reconnectToHost();
 }
 
 void TCPHandler::errorHandle(QAbstractSocket::SocketError)

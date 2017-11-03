@@ -23,12 +23,12 @@ public slots:
 
 protected:
     void sendToIRS(QByteArray data);
-    void sendToIRS(uchar* data, int len);
 
 private slots:
     void IRSConnected();
     void IRSDisconnected();
     void IRSError(QAbstractSocket::SocketError);
+    void IRSReadyRead();
 
 private:
 
@@ -36,6 +36,7 @@ private:
     QString IRS_IP;
     int IRS_port;
     bool isConnectedToIRS;
+    QByteArray availableData;
 };
 
 #endif // CONNECTIONHANDLER_H

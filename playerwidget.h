@@ -31,7 +31,7 @@ signals:
 
 private:
     Ui::PlayerWidget *ui;
-    DeviceScreenWidget *screenWidget;
+    DeviceScreenWidget screenWidget;
     ConnectionHandler *connectionHandler;
 
     QTimer timer;

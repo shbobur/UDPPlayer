@@ -3,7 +3,9 @@
 
 #include <QWidget>
 #include <QPixmap>
-#include "graphicsscene.h"
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include "devicescreenportrait.h"
 
 enum ScreenOrientation { Portrait = 0, Landscape};
 
@@ -39,7 +41,11 @@ private:
 
     Ui::DeviceScreenWidget *ui;
 
-    GraphicsScene *scene;
+    QVBoxLayout *lytPortrait;
+    QHBoxLayout *lytLandscape;
+    DeviceScreenPortrait *screenPortrait;
+
+    //GraphicsScene *scene;
     bool receivingImage;
 
     QGraphicsPixmapItem *imageItem;

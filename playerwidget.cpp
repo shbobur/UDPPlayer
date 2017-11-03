@@ -14,7 +14,7 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
 
     //connectionHandler = new UDPHandler(this);
     connectionHandler = new TCPHandler(this);
-    screenWidget = new DeviceScreenWidget(this);
+    //screenWidget = new DeviceScreenWidget(this);
 
     logFile.setFileName("log.txt");
     if (!logFile.open(QFile::WriteOnly | QFile::Text)) {
@@ -28,22 +28,24 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
 
     fps = 0;
 
-    connect(connectionHandler, &ConnectionHandler::newFrame, screenWidget, &DeviceScreenWidget::handleImage);
-    connect(screenWidget, SIGNAL(reconnect()), connectionHandler, SLOT(reconnectToHost()));
+    connect(connectionHandler, &ConnectionHandler::newFrame, &screenWidget, &DeviceScreenWidget::handleImage);
+    connect(&screenWidget, SIGNAL(reconnect()), connectionHandler, SLOT(reconnectToHost()));
 
    // timer.setInterval(1000);
    // timer.start();
 
-    this->resize(screenWidget->size());
+    //this->resize(screenWidget->size());
     //this->resize(1000,1000);
-    screenWidget->show();
+    screenWidget.show();
+
+    this->hide();
 }
 
 PlayerWidget::~PlayerWidget()
 {
     logFile.close();
 
-    screenWidget->deleteLater();
+    //screenWidget->deleteLater();
     delete ui;
 }
 
