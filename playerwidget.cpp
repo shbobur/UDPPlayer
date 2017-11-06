@@ -31,11 +31,6 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
     connect(connectionHandler, &ConnectionHandler::newFrame, &screenWidget, &DeviceScreenWidget::handleImage);
     connect(&screenWidget, SIGNAL(reconnect()), connectionHandler, SLOT(reconnectToHost()));
 
-   // timer.setInterval(1000);
-   // timer.start();
-
-    //this->resize(screenWidget->size());
-    //this->resize(1000,1000);
     screenWidget.show();
 
     this->hide();
