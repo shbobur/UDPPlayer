@@ -31,10 +31,10 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
     connect(connectionHandler, &ConnectionHandler::newFrame, &screenWidget, &DeviceScreenWidget::handleImage);
     connect(&screenWidget, SIGNAL(reconnect()), connectionHandler, SLOT(reconnectToHost()));
 
+    this->close();
     screenWidget.show();
     //screenWidget.activateWindow();
 
-    //this->hide();
 }
 
 PlayerWidget::~PlayerWidget()

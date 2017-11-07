@@ -48,6 +48,7 @@ private:
     QHBoxLayout *lytLandscape;
     DeviceScreenPortrait *screenPortrait;
     DeviceScreenLandscape *screenLandscape;
+    QSize screenLandscapeSizeHint, screenPortraitSizeHint;
 
     //GraphicsScene *scene;
     bool receivingImage;

@@ -6,6 +6,17 @@
 DeviceScreenLandscape::DeviceScreenLandscape(QWidget *parent) :
     DeviceScreen(parent)
 {
+
+    // resize surface buttons
+    int width = this->btnVolDown->height();
+    int height = ShortSide / 3 - 2;
+    this->btnHome->setMaximumWidth(width);
+    this->btnHome->setMinimumHeight(height);
+    this->btnOverview->setMaximumWidth(width);
+    this->btnOverview->setMinimumHeight(height);
+    this->btnBack->setMaximumWidth(width);
+    this->btnBack->setMinimumHeight(height);
+
     // layout for 3 buttons on the surface
     QVBoxLayout *lytSurfaceBtns = new QVBoxLayout;
     lytSurfaceBtns->addWidget(this->btnOverview);

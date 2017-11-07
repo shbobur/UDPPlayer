@@ -21,6 +21,9 @@ DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
     screenPortrait = new DeviceScreenPortrait(this);
     screenLandscape = new DeviceScreenLandscape(this);
 
+    screenLandscapeSizeHint = screenLandscape->minimumSizeHint();
+    screenPortraitSizeHint = screenPortrait->minimumSizeHint();
+
     // portrait screen layout
     lytPortrait = new QVBoxLayout;
     lytPortrait->setMargin(0);
@@ -33,7 +36,10 @@ DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
 
     ui->page->setLayout(lytPortrait);
     ui->page_2->setLayout(lytLandscape);
-    this->resize(this->minimumSizeHint());
+
+    onOrientationChanged();
+
+    this->activateWindow();
 
     forwardAdbPort();
     startMobileApp();
@@ -58,35 +64,24 @@ void DeviceScreenWidget::handleImage(QPixmap pixmap)
         screenPortrait->updateImage(pixmap);
         ui->stackedWidget->setCurrentIndex(0);
     }
-
-
-   // scene->clear();
-   // scene->addPixmap(pixmap.scaled(width, height, Qt::KeepAspectRatio));
-    //scene->addItem(new QGraphicsPixmapItem(pixmap.scaled(width, height)));
-
-    //qDebug() << "Tried to display image..." << QTime::currentTime().toString();
 }
 
 void DeviceScreenWidget::onOrientationChanged()
 {
-
-    /*QWidget* pPage = nullptr;
-    QSizePolicy::Policy policy;// = QSizePolicy::Ignored;
     if (sOrientaion == Portrait) {
-        pPage = ui->page;
-        // update the size policy
-        pPage->setSizePolicy (policy, policy);
-        policy = QSizePolicy::Ignored;
-        pPage->resize(ui->page->minimumSize());
+        ui->page->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        ui->page_2->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        this->setFixedSize(screenPortrait->minimumSizeHint());
+        ui->stackedWidget->adjustSize();
+        this->adjustSize();
     }
-    else {  // sOrientation = Landscape
-        pPage = ui->page_2;
-        policy = QSizePolicy::Expanding;
-        // update the size policy
-        pPage->setSizePolicy (policy, policy);
-        pPage->resize(ui->page->minimumSize());
+    else if (sOrientaion == Landscape) {  // sOrientation = Landscape
+        ui->page_2->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        ui->page->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        this->setFixedSize(screenLandscape->minimumSizeHint());
+        ui->stackedWidget->adjustSize();
+        this->adjustSize();
     }
-*/
 }
 
 void DeviceScreenWidget::showMouseCoord(QString coord)
