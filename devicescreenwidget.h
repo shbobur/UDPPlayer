@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include "devicescreenportrait.h"
+#include "devicescreenlandscape.h"
 
 enum ScreenOrientation { Portrait = 0, Landscape};
 
@@ -27,12 +28,14 @@ public:
     void handleImage(QPixmap pixmap);
 
 private slots:
+    void onOrientationChanged();
     void showMouseCoord(QString);
     void on_pushButton_clicked();
     void on_adbStartAppButton_clicked();
 
 signals:
     void reconnect();
+    //void orientationChanged();
 
 private:
     void startMobileApp();
@@ -44,6 +47,7 @@ private:
     QVBoxLayout *lytPortrait;
     QHBoxLayout *lytLandscape;
     DeviceScreenPortrait *screenPortrait;
+    DeviceScreenLandscape *screenLandscape;
 
     //GraphicsScene *scene;
     bool receivingImage;

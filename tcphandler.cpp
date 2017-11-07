@@ -91,19 +91,3 @@ void TCPHandler::reconnectToHost()
 
     this->incomingFrameLength = 0;
 }
-
-bool TCPHandler::tryToListen()
-{
-    if (tcpServer->isListening())
-        tcpServer->close();
-
-    return true;
-}
-
-void TCPHandler::startListening()
-{
-    while (!tryToListen()) {
-        if (QMessageBox::question(new QWidget(), tr("Start the server"), tr("Could not start the server. Try again?"), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Ok)
-            break;
-    }
-}

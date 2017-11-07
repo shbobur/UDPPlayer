@@ -32,8 +32,6 @@ private:
     QString IP;
     int port;
 
-    bool tryToListen();
-    void startListening();
     int incomingFrameLength;
 };
 

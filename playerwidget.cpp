@@ -32,8 +32,9 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
     connect(&screenWidget, SIGNAL(reconnect()), connectionHandler, SLOT(reconnectToHost()));
 
     screenWidget.show();
+    //screenWidget.activateWindow();
 
-    this->hide();
+    //this->hide();
 }
 
 PlayerWidget::~PlayerWidget()

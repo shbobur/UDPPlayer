@@ -32,7 +32,8 @@ SOURCES += \
     tcphandler.cpp \
     connectionhandler.cpp \
     devicescreen.cpp \
-    devicescreenportrait.cpp
+    devicescreenportrait.cpp \
+    devicescreenlandscape.cpp
 
 HEADERS += \
         playerwidget.h \
@@ -42,7 +43,8 @@ HEADERS += \
     tcphandler.h \
     connectionhandler.h \
     devicescreen.h \
-    devicescreenportrait.h
+    devicescreenportrait.h \
+    devicescreenlandscape.h
 
 FORMS += \
         playerwidget.ui \

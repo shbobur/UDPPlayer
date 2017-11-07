@@ -14,37 +14,26 @@ DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
     ui(new Ui::DeviceScreenWidget)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-/*
-    sOrientaion = Portrait;
-    shortSide = 360; // 480;
-    longSide = 640; //853;
-    width = shortSide;
-    height = longSide;
+    setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint);
 
-    scene = new GraphicsScene(this);
-    connect(scene, SIGNAL(mouseCoordinates(QString)), this, SLOT(showMouseCoord(QString)));
-
-    QGraphicsPixmapItem *imageItem = new QGraphicsPixmapItem(QPixmap::fromImage(QImage(":/SVkVXu-T_400x400_JPEG.jpg")));
-    scene->addItem(imageItem);
-    ui->playerGraphicsView->setScene(scene);
-    ui->playerGraphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    ui->playerGraphicsView->setFixedSize(width+2, height+2);
-    ui->playerGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->playerGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //ui->playerGraphicsView->setFixedSize(width+2*ui->playerGraphicsView->frameWidth(), height+2*ui->playerGraphicsView->frameWidth());
-    ui->playerGraphicsView->setSceneRect(0, 0, width, height);
-    //ui->playerGraphicsView->setSceneRect(0, 0, width, height);
-   // ui->playerGraphicsView->fitInView(0, 0, width, height, Qt::KeepAspectRatio);*/
+    connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(onOrientationChanged()));
 
     screenPortrait = new DeviceScreenPortrait(this);
+    screenLandscape = new DeviceScreenLandscape(this);
 
     // portrait screen layout
-
-    lytPortrait = new QVBoxLayout(this);
+    lytPortrait = new QVBoxLayout;
     lytPortrait->setMargin(0);
     lytPortrait->addWidget(screenPortrait);
-    this->setLayout(lytPortrait);
+
+    // landscape screen layout
+    lytLandscape = new QHBoxLayout;
+    lytLandscape->setMargin(0);
+    lytLandscape->addWidget(screenLandscape);
+
+    ui->page->setLayout(lytPortrait);
+    ui->page_2->setLayout(lytLandscape);
+    this->resize(this->minimumSizeHint());
 
     forwardAdbPort();
     startMobileApp();
@@ -61,22 +50,43 @@ void DeviceScreenWidget::handleImage(QPixmap pixmap)
     //QPixmap pixmap;
     if (pixmap.width() > pixmap.height()) {   // if landscape mode
         sOrientaion = Landscape;
-        width = longSide;
-        height = shortSide;
+        screenLandscape->updateImage(pixmap);
+        ui->stackedWidget->setCurrentIndex(1);
     }
     else {                                    // portrait
         sOrientaion = Portrait;
-        width = shortSide;
-        height = longSide;
+        screenPortrait->updateImage(pixmap);
+        ui->stackedWidget->setCurrentIndex(0);
     }
 
-    screenPortrait->updateImage(pixmap);
 
    // scene->clear();
    // scene->addPixmap(pixmap.scaled(width, height, Qt::KeepAspectRatio));
     //scene->addItem(new QGraphicsPixmapItem(pixmap.scaled(width, height)));
 
     //qDebug() << "Tried to display image..." << QTime::currentTime().toString();
+}
+
+void DeviceScreenWidget::onOrientationChanged()
+{
+
+    /*QWidget* pPage = nullptr;
+    QSizePolicy::Policy policy;// = QSizePolicy::Ignored;
+    if (sOrientaion == Portrait) {
+        pPage = ui->page;
+        // update the size policy
+        pPage->setSizePolicy (policy, policy);
+        policy = QSizePolicy::Ignored;
+        pPage->resize(ui->page->minimumSize());
+    }
+    else {  // sOrientation = Landscape
+        pPage = ui->page_2;
+        policy = QSizePolicy::Expanding;
+        // update the size policy
+        pPage->setSizePolicy (policy, policy);
+        pPage->resize(ui->page->minimumSize());
+    }
+*/
 }
 
 void DeviceScreenWidget::showMouseCoord(QString coord)
