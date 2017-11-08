@@ -17,6 +17,7 @@ public:
 
 signals:
     void newFrame(QPixmap);
+    void newParametersRect(qreal x, qreal y);
 
 public slots:
     void reconnectToHost();

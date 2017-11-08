@@ -9,6 +9,8 @@
 #include <QStringList>
 #include <QTime>
 
+#define RECT_SIDE 30
+
 DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DeviceScreenWidget)
@@ -43,6 +45,9 @@ DeviceScreenWidget::DeviceScreenWidget(QWidget *parent) :
 
     forwardAdbPort();
     startMobileApp();
+
+    rectX = 0;
+    rectY = 0;
 }
 
 DeviceScreenWidget::~DeviceScreenWidget()
@@ -57,11 +62,21 @@ void DeviceScreenWidget::handleImage(QPixmap pixmap)
     if (pixmap.width() > pixmap.height()) {   // if landscape mode
         sOrientaion = Landscape;
         screenLandscape->updateImage(pixmap);
+        QBrush blueBrush(Qt::transparent);
+        QPen outlinePen(Qt::white);
+        outlinePen.setWidth(3);
+        QGraphicsRectItem *rectangle = screenLandscape->playerScene->addRect(rectX, rectY, 50, 50, outlinePen, blueBrush);
+        //screenLandscape->playerScene->addRect((qreal)x, (qreal)y, (qreal)RECT_SIDE, (qreal)RECT_SIDE);
         ui->stackedWidget->setCurrentIndex(1);
     }
     else {                                    // portrait
         sOrientaion = Portrait;
         screenPortrait->updateImage(pixmap);
+        QBrush blueBrush(Qt::transparent);
+        QPen outlinePen(Qt::white);
+        outlinePen.setWidth(3);
+        QGraphicsRectItem *rectangle = screenLandscape->playerScene->addRect(rectX, rectY, 50, 50, outlinePen, blueBrush);
+
         ui->stackedWidget->setCurrentIndex(0);
     }
 }
@@ -86,22 +101,18 @@ void DeviceScreenWidget::onOrientationChanged()
 
 void DeviceScreenWidget::showMouseCoord(QString coord)
 {
-   //` ui->mouseCoordLabel->setText(coord);
+    //` ui->mouseCoordLabel->setText(coord);
 }
 
-void DeviceScreenWidget::on_pushButton_clicked()
+void DeviceScreenWidget::updateRectCoord(qreal x, qreal y)
 {
-    emit reconnect();
-}
-
-void DeviceScreenWidget::on_adbStartAppButton_clicked()
-{
-    startMobileApp();
+    this->rectX = x;
+    this->rectY = y;
 }
 
 void DeviceScreenWidget::startMobileApp()
 {
-    QString cmd = "C:/Users/Bobur/AppData/Local/Android/sdk/platform-tools/adb.exe shell am start -n com.example.admin.streammediaprojection/com.example.admin.streammediaprojection.MainActivity";
+    QString cmd = "C:/Users/Bobur/AppData/Local/Android/sdk/platform-tools/adb.exe -s 0715f7cda8412c36 shell am start -n com.example.admin.streammediaprojection/com.example.admin.streammediaprojection.MainActivity";
     QProcess *p = new QProcess(this);
     p->start(cmd);
     p->waitForFinished(-1);
@@ -114,7 +125,7 @@ void DeviceScreenWidget::startMobileApp()
 
 void DeviceScreenWidget::stopMobileApp()
 {
-    QString cmd = "C:/Users/Bobur/AppData/Local/Android/sdk/platform-tools/adb.exe -s 02157df27a5a001e shell pm clear com.example.admin.streammediaprojection";
+    QString cmd = "C:/Users/Bobur/AppData/Local/Android/sdk/platform-tools/adb.exe -s 0715f7cda8412c36 shell pm clear com.example.admin.streammediaprojection";
     QProcess *p = new QProcess(this);
     p->start(cmd);
     p->waitForFinished(-1);

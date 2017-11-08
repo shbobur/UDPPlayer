@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGraphicsView>
 #include <QPushButton>
+#include <QLabel>
 #include "graphicsscene.h"
 
 enum {ShortSide = 360, LongSide = 640};
@@ -27,7 +28,7 @@ signals:
 
 public slots:
 
-protected:
+public:
     // screen of mobile device
     QGraphicsView *playerGraphicsView;
     GraphicsScene *playerScene;
@@ -42,6 +43,9 @@ protected:
     QPushButton *btnPower;
     QPushButton *btnVolUp;
     QPushButton *btnVolDown;
+
+    QLabel *lblFrameRate;
+    QLabel *lblFrameRateText;
 
 private:
     quint32 width, height;

@@ -2,6 +2,7 @@
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QSpacerItem>
 
 DeviceScreenPortrait::DeviceScreenPortrait(QWidget *parent) :
     DeviceScreen(parent)
@@ -18,6 +19,11 @@ DeviceScreenPortrait::DeviceScreenPortrait(QWidget *parent) :
     lytSideBtns->addWidget(this->btnVolUp);
     lytSideBtns->addWidget(this->btnVolDown);
     lytSideBtns->addWidget(this->btnPower);
+    //QSpacerItem *spacer = new QSpacerItem;
+    //lytSideBtns->addSpacerItem(spacer);
+    lytSideBtns->addWidget(this->lblFrameRateText);
+    lytSideBtns->addWidget(this->lblFrameRate);
+
 
     // set Graphics View size
     playerGraphicsView->setFixedWidth(ShortSide);

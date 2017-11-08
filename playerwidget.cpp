@@ -29,6 +29,7 @@ PlayerWidget::PlayerWidget(QWidget *parent) :
     fps = 0;
 
     connect(connectionHandler, &ConnectionHandler::newFrame, &screenWidget, &DeviceScreenWidget::handleImage);
+    connect(connectionHandler, &ConnectionHandler::newParametersRect, &screenWidget, &DeviceScreenWidget::updateRectCoord);
     connect(&screenWidget, SIGNAL(reconnect()), connectionHandler, SLOT(reconnectToHost()));
 
     this->close();

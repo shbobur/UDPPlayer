@@ -26,12 +26,11 @@ public:
     ~DeviceScreenWidget();
 
     void handleImage(QPixmap pixmap);
+    void updateRectCoord(qreal x, qreal y);
 
 private slots:
     void onOrientationChanged();
     void showMouseCoord(QString);
-    void on_pushButton_clicked();
-    void on_adbStartAppButton_clicked();
 
 signals:
     void reconnect();
@@ -57,6 +56,7 @@ private:
     ScreenOrientation sOrientaion;
     int longSide, shortSide;
     quint32 width, height;
+    qreal rectX, rectY;
 };
 
 #endif // DEVICESCREENWIDGET_H

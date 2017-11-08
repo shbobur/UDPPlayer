@@ -55,11 +55,13 @@ void ConnectionHandler::IRSError(QAbstractSocket::SocketError error)
 
 void ConnectionHandler::IRSReadyRead()
 {
-   /* QString ack = IRServerSocket->readAll();
-    if (ack == "ok" && !availableData.isEmpty()) {
-        IRServerSocket->write(availableData);
-        availableData.clear();
-    }*/
+    if (IRServerSocket->isOpen() && IRServerSocket->bytesAvailable()) {
+        QString s1 = IRServerSocket->readAll();
+        int x = s1.toInt() / 1000;
+        int y = s1.toInt() % 1000;
+        emit newParametersRect((qreal)x, (qreal)y);
+        qDebug() << x << ":" << y;
+    }
 }
 
 void ConnectionHandler::sendToIRS(QByteArray data)
@@ -68,9 +70,9 @@ void ConnectionHandler::sendToIRS(QByteArray data)
         QDataStream stream(IRServerSocket);
         int t = data.size();
         stream << t;
-        IRServerSocket->waitForBytesWritten(3000);
+        //IRServerSocket->waitForBytesWritten(3000);
         stream << data;
-        IRServerSocket->waitForBytesWritten(3000);
+        IRServerSocket->waitForBytesWritten(-1);
         //availableData = data;
         qDebug() << "Sent a frame size of " << data.size() << " to IRS";
     }

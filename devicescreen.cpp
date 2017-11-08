@@ -18,6 +18,8 @@ DeviceScreen::DeviceScreen(QWidget *parent) : QWidget(parent)
     btnVolUp = new QPushButton(tr("Vol+"), this);
     btnVolDown = new QPushButton(tr("Vol-"), this);
 
+    lblFrameRateText = new QLabel(tr("Frame rate (fps): "), this);
+    lblFrameRate = new QLabel(this);
 }
 
 DeviceScreen::~DeviceScreen()
